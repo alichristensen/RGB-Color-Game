@@ -1,4 +1,5 @@
-var colors = generateRandomColors(6); 
+var numberOfSquares = 6;
+var colors = generateRandomColors(numberOfSquares); 
 
 var squares = document.querySelectorAll(".square"); 
 var picked = pickColor(); 
@@ -6,17 +7,57 @@ var colorDis = document.getElementById("colorDis");
 var messageDis = document.querySelector("#message");
 var h1 = document.querySelector("h1");
 var resetButt = document.querySelector("#reset");
+var easy = document.querySelector("#easyBtn"); 
+var hard = document.querySelector("#hardBtn");
 
-resetButt = addEventListener("click", function() {
+easy.addEventListener("click", function(){
+	hard.classList.remove("selected");
+	easy.classList.add("selected");
+	numberOfSquares = 3;
+
+	colors = generateRandomColors(numberOfSquares); 
+	picked = pickColor(); 
+	colorDis.textContent = picked;
+
+	for (var i=0; i<squares.length; i++){
+		if (colors[i]){
+			squares[i].style.background = colors[i];
+		}
+		else {
+			squares[i].style.display = "none";
+		}
+	}
+
+});
+
+hard.addEventListener("click", function(){
+	easy.classList.remove("selected");
+	hard.classList.add("selected");
+	numberOfSquares = 6; 
+
+	colors = generateRandomColors(numberOfSquares); 
+	picked = pickColor(); 
+	colorDis.textContent = picked;
+
+	for (var i=0; i<squares.length; i++){
+		squares[i].style.background = colors[i];
+		squares[i].style.display = "block";
+	}
+});
+
+resetButt.addEventListener("click", function() {
 	//generate all new colors
-	colors = generateRandomColors(6)
+	colors = generateRandomColors(numberOfSquares);
 	//pick new random color from array
 	picked = pickColor();
 	colorDis.textContent = picked;
+	messageDis.textContent = " "; 
+	this.textContent = "New Colors";
 	//change colors of squares
 	for (var i =0; i <squares.length; i++){
 		squares[i].style.background = colors[i];
 	}
+	h1.style.background = "steelblue";
 });
 
 colorDis.textContent = picked;
@@ -33,9 +74,11 @@ for (var i =0; i < squares.length; i++) {
 			messageDis.textContent = "Correct!";
 			changeColors(clickedColor);
 			h1.style.background = clickedColor;
+			resetButt.textContent = "Play Again?";
 		}
 		else {
 			messageDis.textContent = "Try Again";
+			this.style.background = "#232323";
 		}
 
 	});
